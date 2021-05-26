@@ -1,0 +1,10 @@
+// {type:sequence}
+// {generate:true}
+
+[Publisher]Signin>[FrontEnd]
+[FrontEnd]register(Address)>[MarketPlace]
+[FrontEnd]getNonce(Address)>[MarketPlace]
+[MarketPlace]nonce string.>[FrontEnd]
+[FrontEnd]auth(address, signature)>[MarketPlace]
+[MarketPlace]UserCredentials(address, nonce, publicKey)>[Database]
+[MarketPlace]Authorization Token.>[FrontEnd]

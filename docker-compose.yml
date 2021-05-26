@@ -1,0 +1,133 @@
+version: '3'
+services:
+
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    container_name: ganache
+    ports:
+      - "8545:8545"
+    volumes:
+      - ganache_data:/ganache_data
+    networks:
+      vidnftnet:
+        ipv4_address: 173.26.0.100
+    healthcheck:
+      test: wget  --header=Content-Type:application/json --post-data='{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' http://localhost:8545 -O /dev/null
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    entrypoint:
+      - node
+      - ./ganache-core.docker.cli.js
+      - --deterministic
+      - --db=/ganache_data
+      - --hostname
+      - '0.0.0.0'
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "marketplace"
+      POSTGRES_USER: "root"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    networks:
+      vidnftnet:
+        ipv4_address: 173.26.0.110 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d marketplace"]
+      interval: 2s
+      timeout: 50s
+      retries: 25        
+    ports:
+      - 5432:5432
+
+  marketplace_init:
+    #build: ./marketplace
+    image: registry.videocoin.net/nft/marketplace:5526a9bb69cea17b7844996a246dcde1f46add7d
+    container_name: marketplace_init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: 
+      - marketplace_env.list
+    networks:
+      vidnftnet:
+    command:  bash -c 'sleep 10 && /goose -dir /migrations -table marketplace postgres "host=postgres port=5432 dbname=marketplace sslmode=disable" up'
+
+  marketplace:
+    image: registry.videocoin.net/nft/marketplace:5526a9bb69cea17b7844996a246dcde1f46add7d
+    container_name: marketplace
+    depends_on:
+      marketplace_init:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    env_file: 
+      - marketplace_env.list
+    #network_mode: host      
+    networks:
+      vidnftnet:
+        ipv4_address: 173.26.0.120 
+    ports:
+      - 8088:8088
+          
+  nft-app:
+    build:
+      context: ./nft-app
+      args:
+        REACT_APP_BASE_URL: 'http://localhost:8088/api/v1'
+        REACT_APP_NETWORKS: 1337,5
+        REACT_APP_TOKEN_ADDRESS: 0xCfEB869F69431e42cdB54A4F4f105C19C080A601
+    image: nft-app
+    container_name: nft-app 
+    environment:
+      REACT_APP_BASE_URL: 'http://173.26.0.120:8088/api/v1'
+       
+    networks:
+      vidnftnet:
+        ipv4_address: 173.26.0.130 
+    ports:
+      - 8080:80
+
+  nft-contracts-deploy:
+    build: 
+      context: wyvern-nft-tokens-poc
+    container_name: nft-contracts-deploy
+    depends_on:
+      ganache:
+        condition: service_healthy
+    env_file: 
+      - nft-contracts_env.list
+    volumes:
+      - contracts_data:/code/data      
+    networks:
+      vidnftnet:
+    command:  bash -c 'truffle --network viddev migrate && cat config.json'
+
+
+  explorer:
+    hostname: explorer
+    depends_on:
+      - ganache
+    image: alethio/ethereum-lite-explorer
+    container_name: explorer
+    ports:
+      - 8090:80
+    environment:
+      APP_NODE_URL: "http://localhost:8545"
+    networks:
+      vidnftnet:
+        ipv4_address: 173.26.0.140 
+    
+networks:
+  vidnftnet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 173.26.0.0/24
+
+volumes:
+  ganache_data:
+  contracts_data:
+    
+

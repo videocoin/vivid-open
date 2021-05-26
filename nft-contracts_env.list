@@ -1,0 +1,3 @@
+VID_RPC="http://ganache:8545"
+VID_PRIV_KEY="0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d"
+ERC1155_TOKEN_URI_TEMPLATE="http://localhost:3000/tokens/nft1155/{id}.json"
