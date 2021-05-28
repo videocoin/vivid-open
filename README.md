@@ -47,6 +47,24 @@ docker-compose down -v
 ```
 Note: If you are going run the video-nft-devnetwork again (docker-compose up), flush your browser cache to remove the stale authentication of nft-app from the previous session.
 
+### Check integrity and DRM
+
+* Retrieve the drm data from the token URI
+* Use the marketplace docker container to decrypt the drm data. You need to supply the private key corresponding to the public key used for creating DRM data.
+* This step outputs the content encryption key.
+* Use the content encryption key to decode the encrypted video asset using ffmpeg.
+
+Example: Decrypt DRM data and retrieve content encryption key. You need to supply private key with -s option and DRM data with -d option
+```
+docker run --rm -it -e "PRIV_KEY=<Your_Priv_Key>" -e "DRM_KEY=<DRM_DATA_FROM_TOKEN_URI>" registry.videocoin.net/cloud/marketplace:8c7af9248ac36e1e698e143d47782ddf2e4b2d7d /mpek
+```
+Outputs content deryption key on succesful decryption of DRM.
+
+Decrypt the content using the encryption key obtained in the previous step.
+```
+ffmpeg  -decryption_key <decryption key> -i encrypted_firstfilm.mp4 -c:v copy -c:a copy test_dec.mp4
+```
+
 ## VideoNFT Marketplace Components
 Docker-compose based devnet that includes the following services:
 * NFT-APP(Video NFT Frontend)
