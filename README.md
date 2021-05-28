@@ -54,7 +54,7 @@ Note: If you are going run the video-nft-devnetwork again (docker-compose up), f
 * This step outputs the content encryption key.
 * Use the content encryption key to decode the encrypted video asset using ffmpeg.
 
-Example: Decrypt DRM data and retrieve content encryption key. You need to supply private key with -s option and DRM data with -d option
+Example: Decrypt DRM data and retrieve content encryption key.
 ```
 docker run --rm -it -e "PRIV_KEY=<Your_Priv_Key>" -e "DRM_KEY=<DRM_DATA_FROM_TOKEN_URI>" registry.videocoin.net/cloud/marketplace:8c7af9248ac36e1e698e143d47782ddf2e4b2d7d /mpek
 ```
