@@ -43,7 +43,7 @@ services:
 
   marketplace_init:
     #build: ./marketplace
-    image: registry.videocoin.net/nft/marketplace:5526a9bb69cea17b7844996a246dcde1f46add7d
+    image: registry.videocoin.net/nft/marketplace:alpha
     container_name: marketplace_init
     depends_on:
       postgres:
@@ -55,7 +55,7 @@ services:
     command:  bash -c 'sleep 10 && /goose -dir /migrations -table marketplace postgres "host=postgres port=5432 dbname=marketplace sslmode=disable" up'
 
   marketplace:
-    image: registry.videocoin.net/nft/marketplace:5526a9bb69cea17b7844996a246dcde1f46add7d
+    image: registry.videocoin.net/nft/marketplace:alpha
     container_name: marketplace
     depends_on:
       marketplace_init:
