@@ -1,6 +1,9 @@
 [submodule "nft-app"]
 	path = nft-app
 	url = https://github.com/videocoin/nft-app.git
-[submodule "wyvern-nft-tokens-poc"]
-	path = wyvern-nft-tokens-poc
-	url = https://github.com/videocoin/wyvern-nft-tokens-poc.git
+[submodule "wyvern-ethereum-experiments"]
+	path = wyvern-ethereum-experiments
+	url = https://github.com/videocoin/wyvern-ethereum-experiments
+[submodule "videocoin-nft"]
+	path = videocoin-nft
+	url = https://github.com/videocoin/videocoin-nft
