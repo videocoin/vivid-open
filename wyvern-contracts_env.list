@@ -1,2 +1,2 @@
-PRIVATE_RPC="http://ganache:8545"
+CUSTOM_RPC="http://173.26.0.100:8545"
 CUSTPOM_PRIM_KEY="ship arena salad typical truly found start bind insane six wheel vendor"

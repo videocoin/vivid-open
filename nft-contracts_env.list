@@ -1,4 +1,4 @@
-PRIVATE_RPC="http://ganache:8545"
+CUSTOM_RPC="http://173.26.0.100:8545"
 MNENONIC="ship arena salad typical truly found start bind insane six wheel vendor"
 NFT721_NAME=MyTestNFT
 NFT721_SYMBOL=MTNFT

@@ -19,7 +19,8 @@ services:
     entrypoint:
       - node
       - ./ganache-core.docker.cli.js
-      - --deterministic
+      - -m
+      - ${MNEMONIC}
       - --db=/ganache_data
       - --hostname
       - '0.0.0.0'
@@ -102,7 +103,8 @@ services:
       - contracts_data:/code/data      
     networks:
       vidnftnet:
-    command:  bash -c 'truffle --network custom migrate && cat config.json'
+        ipv4_address: 173.26.0.101
+    command:  bash -c 'truffle --config truffle-config.js --network custom migrate && cat config.json'
 
   wyvern-contracts-deploy:
     build: 
@@ -117,6 +119,7 @@ services:
       - contracts_data:/code/data      
     networks:
       vidnftnet:
+        ipv4_address: 173.26.0.102
     command:  bash -c 'truffle --config truffle.js --network custom migrate && cat config.json'
 
   explorer:
