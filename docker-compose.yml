@@ -117,7 +117,7 @@ services:
       - contracts_data:/code/data      
     networks:
       vidnftnet:
-    command:  bash -c 'truffle --network custom migrate && cat config.json'
+    command:  bash -c 'truffle --config truffle.js --network custom migrate && cat config.json'
 
   explorer:
     hostname: explorer
