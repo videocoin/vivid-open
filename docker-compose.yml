@@ -91,7 +91,7 @@ services:
 
   nft-contracts-deploy:
     build: 
-      context: wyvern-nft-tokens-poc
+      context: videocoin-nft
     container_name: nft-contracts-deploy
     depends_on:
       ganache:
@@ -102,8 +102,22 @@ services:
       - contracts_data:/code/data      
     networks:
       vidnftnet:
-    command:  bash -c 'truffle --network viddev migrate && cat config.json'
+    command:  bash -c 'truffle --network custom migrate && cat config.json'
 
+  wyvern-contracts-deploy:
+    build: 
+      context: wyvern-ethereum-experiments
+    container_name:  wyvern-contracts-deploy
+    depends_on:
+      ganache:
+        condition: service_healthy
+    env_file: 
+      -  wyvern-contracts_env.list
+    volumes:
+      - contracts_data:/code/data      
+    networks:
+      vidnftnet:
+    command:  bash -c 'truffle --network custom migrate && cat config.json'
 
   explorer:
     hostname: explorer
