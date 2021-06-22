@@ -46,7 +46,7 @@ services:
 
   marketplace_init:
     #build: ./marketplace
-    image: registry.videocoin.net/nft/marketplace:alpha-rc1
+    image: registry.videocoin.net/nft/marketplace:alpha-rc1-hotfix1
     container_name: marketplace_init
     depends_on:
       postgres:
