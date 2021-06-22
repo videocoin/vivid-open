@@ -47,11 +47,14 @@ Note down the Video NFT and Wyvern Exchange contract addresses from the previous
 ```
 .env
 nft-contracts_env.list
+wyvern-contracts_env.list
 marketplace_env.list
 ```
-Build nft-app
+
+See in the revelnat sections of the modules in this document for details of environment varaibles in the above files
+### Build nft-app
 ```
-### docker-compose build nft-app
+docker-compose build nft-app
 ```
 ### Run the nft-app and marketplace services
 ```
@@ -183,11 +186,24 @@ MNEMONIC="ship arena salad typical truly found start bind insane six wheel vendo
 ## Token Contracts
 Environment variables:
 ```
-VID_PRIV_KEY=""
-VID_RPC=http://localhost:8545
-ERC1155_TOKEN_URI_TEMPLATE="https://hub.textile.io/ipns/<MARKETPLACE_TEXTILE_BUCKET_ROOT_KEY>/1.json"
+# ganache testnet rpc
+CUSTOM_RPC="http://173.26.0.100:8545"
+# test wallet
+MNENONIC="ship arena salad typical truly found start bind insane six wheel vendor"
+NFT721_NAME=MyTestNFT
+NFT721_SYMBOL=MTNFT
+INFURA_KEY=
+ERC1155_TOKEN_URI_TEMPLATE="http://localhost:3000/tokens/nft1155/{id}.json"
 ```
 
+## Wyvern Exchange Contracts
+Environment variables:
+```
+# ganache testnet rpc
+CUSTOM_RPC="http://173.26.0.100:8545"
+# test wallet\
+CUSTPOM_PRIM_KEY="ship arena salad typical truly found start bind insane six wheel vendor"
+```
 ## Explorer
 An open source Lightweight Block Explorer
 It can show the status of blockchain and can be replaced with any Ethereum blockchain. It is useful if a local test chain such as Ganache is used.
