@@ -21,6 +21,8 @@ services:
       - ./ganache-core.docker.cli.js
       - -m
       - ${MNEMONIC}
+      - --networkId
+      - '1337'
       - --db=/ganache_data
       - --hostname
       - '0.0.0.0'
@@ -76,13 +78,13 @@ services:
     build:
       context: ./nft-app
       args:
-        REACT_APP_BASE_URL: 'http://localhost:8088/api/v1'
-        REACT_APP_NETWORKS: 1337,5
-        REACT_APP_TOKEN_ADDRESS: 0xCfEB869F69431e42cdB54A4F4f105C19C080A601
+        REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+        REACT_APP_NETWORKS: ${REACT_APP_NETWORKS}
+        REACT_APP_TOKEN_ADDRESS: ${REACT_APP_TOKEN_ADDRESS}
     image: nft-app
     container_name: nft-app 
     environment:
-      REACT_APP_BASE_URL: 'http://173.26.0.120:8088/api/v1'
+      REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
        
     networks:
       vidnftnet:
