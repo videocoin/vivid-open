@@ -116,7 +116,14 @@ The above components are configurable. The Video NFT GUI installer obtains the c
 ## nft-app
 VideoCoin NFT Frontend
 
-Build-time arguments. Specify these values in .env file
+Build-time arguments. Specify these values in .env file of docker-compose. These arguments are passed as build-time arguments to the nft-app.
+Wyvern contract addresses can be obtained after deploying the wyvern contracts using wyvern-contract-deploye as shown in the previous step.
+Look at the log using docker logs 
+```
+docker logs wyvern-contracts-deploy
+```
+Fill the wyvern exchange contract addresses in .env file with the relevant contract addresses displayed against "custom" blockchain in the log.
+
 ```
 # marketplace endpint
 REACT_APP_BASE_URL=
@@ -124,6 +131,15 @@ REACT_APP_BASE_URL=
 REACT_APP_NETWORKS=
 # Video NFT Contract address
 REACT_APP_TOKEN_ADDRESS=
+
+# Wyvern contract addresses
+REACT_APP_WYVERN_EXCHANGE=
+REACT_APP_WYVERN_PROXY_REGISTRY=
+REACT_APP_WYVERN_ATOMICIZER=
+REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY=
+
+REACT_APP_WYVERN_DAO=
+REACT_APP_WYVERN_TOKEN=
 ```
 ## Marketplace
 This service provides the backend API for the VideoCoin NFT.

@@ -46,7 +46,7 @@ services:
 
   marketplace_init:
     #build: ./marketplace
-    image: registry.videocoin.net/nft/marketplace:alpha
+    image: registry.videocoin.net/nft/marketplace:alpha-rc1
     container_name: marketplace_init
     depends_on:
       postgres:
@@ -81,6 +81,19 @@ services:
         REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
         REACT_APP_NETWORKS: ${REACT_APP_NETWORKS}
         REACT_APP_TOKEN_ADDRESS: ${REACT_APP_TOKEN_ADDRESS}
+        REACT_APP_CUSTOM_PROVIDER_URL: ${REACT_APP_CUSTOM_PROVIDER_URL}
+        REACT_APP_API_BASE_CUSTOM: ${REACT_APP_API_BASE_CUSTOM}
+        REACT_APP_SITE_HOST_CUSTOM: ${REACT_APP_SITE_HOST_CUSTOM}
+        
+        # Wyvern contract addresses
+        REACT_APP_WYVERN_EXCHANGE: ${REACT_APP_WYVERN_EXCHANGE}
+        REACT_APP_WYVERN_PROXY_REGISTRY: ${REACT_APP_WYVERN_PROXY_REGISTRY}
+        REACT_APP_WYVERN_ATOMICIZER: ${REACT_APP_WYVERN_ATOMICIZER}
+        REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY: ${REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY}
+        
+        REACT_APP_WYVERN_DAO: ${REACT_APP_WYVERN_DAO} 
+        REACT_APP_WYVERN_TOKEN: ${REACT_APP_WYVERN_TOKEN}
+
     image: nft-app
     container_name: nft-app 
     environment:
