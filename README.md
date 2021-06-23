@@ -58,7 +58,7 @@ marketplace_env.list
 
 See in the revelnat sections of the modules in this document for details of environment varaibles in the above files
 
-**Note: For the test wallet mnemonic/pricate key, the generated contract addresses are deterministic, if the contracts are deployed in the order specified in the dicument due to deterministic nonce update. This will usesful for quick testing**
+**Note: If you use the test wallet mnemonic/private key specified in this doc, the generated contract addresses are deterministic, if the contracts are deployed in the order specified in the document due to deterministic nonce update. This will useful for quick testing**
 ### Build nft-app
 ```
 docker-compose build nft-app
@@ -87,7 +87,7 @@ Bringdown the Video NFT Devnet
 ```
 docker-compose down -v
 ```
-**Note: If you are going run the video-nft-devnetwork again (docker-compose up), flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
+**Note: If you are going run the video-nft-devnetwork again after shutting down, flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
 
 ### Check integrity and DRM
 
