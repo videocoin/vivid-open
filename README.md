@@ -5,6 +5,8 @@ checkout the repo, get the submodules and run the docker-compose.
 ```
 git submodule update --init --recursive
 ```
+**You may see a message: fatal: No url found for submodule path 'nft-app/src/Opensea-js' in .gitmodules during the above command. You may ignore it for now and proceed with further steps**
+
 Update the docker-compose to lattest vetsion(v1.29.1)  
 https://docs.docker.com/compose/install/
 
@@ -56,7 +58,7 @@ wyvern-contracts_env.list
 marketplace_env.list
 ```
 
-See in the revelnat sections of the modules in this document for details of environment varaibles in the above files
+See in the relevant sections of the modules in this document for details of environment varaibles in the above files
 
 **Note: If you use the test wallet mnemonic/private key specified in this doc, the generated contract addresses are deterministic, if the contracts are deployed in the order specified in the document due to deterministic nonce update. This will useful for quick testing**
 ### Build nft-app
@@ -67,7 +69,7 @@ docker-compose build nft-app
 ```
 docker-compose up postgres marketplace_init marketplace nft-app
 ```
-Open the browser and launch the aft-app.
+## Open the browser and launch the aft-app.
 ```
 http://localhost:8080/
 ```
@@ -87,7 +89,7 @@ Bringdown the Video NFT Devnet
 ```
 docker-compose down -v
 ```
-**Note: If you are going run the video-nft-devnetwork again after shutting down, flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
+**Note: If you are going to run the video-nft-devnetwork again after shutting down, flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
 
 ### Check integrity and DRM
 
@@ -217,3 +219,7 @@ An open source Lightweight Block Explorer
 It can show the status of blockchain and can be replaced with any Ethereum blockchain. It is useful if a local test chain such as Ganache is used.
 
 https://github.com/Alethio/ethereum-lite-explorer
+
+## Open Issues:
++ Spurious folder nft-app/src/Opensea-js needs to be removed after initial update of submodules
++ In nft-app, after minting the token, "View On IPFS" button is not showing the correct token uri. 
