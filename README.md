@@ -47,7 +47,8 @@ docker-compose up nft-contracts-deploy
 docker-compose up wyvern-contracts-deploy
 ```
 ### Update environment and build arguments
-Note down the Video NFT and Wyvern Exchange contract addresses from the previous steps and update the following files
+Note down the Video NFT and Wyvern Exchange contract addresses from the previous steps and update the following files.
+
 ```
 .env
 nft-contracts_env.list
@@ -56,6 +57,8 @@ marketplace_env.list
 ```
 
 See in the revelnat sections of the modules in this document for details of environment varaibles in the above files
+
+**Note: For the test wallet mnemonic/pricate key, the generated contract addresses are deterministic, if the contracts are deployed in the order specified in the dicument due to deterministic nonce update. This will usesful for quick testing**
 ### Build nft-app
 ```
 docker-compose build nft-app
@@ -162,8 +165,9 @@ TEXTILE_AUTH_SECRET=
 TEXTILE_THREAD_ID=
 TEXTILE_BUCKET_ROOT_KEY=
 
-ERC721_CONTRACT_ADDRESS=
-ERC721_AUCTION_CONTRACT_ADDRESS=0xdA563d7C33d08ec19b094Fb253C4Cc31cc8BC0E5
+ERC721_CONTRACT_ADDRESS=0xA7b3d9092b87Fd73F98d0B9EA1bE9332deAFAda8
+# change the contract address and exchange address to lowercase
+ERC721_AUCTION_CONTRACT_ADDRESS=0xda563d7c33d08ec19b094fb253c4cc31cc8bc0e5
 # Test key used fro deploying Video NFT contract
 ERC721_CONTRACT_KEY={"address":"3393facca448b53b509306c53d2ee1980725a0a0","crypto":{"cipher":"aes-128-ctr","ciphertext":"9e1059dae28e760dbdeb11c1ae80d3a08d4a37615661728faab7f9ec161b898d","cipherparams":{"iv":"2d03e1f35c1119373bf752ed0bba7101"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"d40a13f97124764eafdd460b09bd4d9e66de3abf59c0f41144943ac194446025"},"mac":"d9bcdd1596506ce2e6b4f7d0cec2f8d5c18d027d7850b445682c08631cd60980"},"id":"e829aa11-5ddd-4772-9c45-bb4bbf86aa04","version":3}
 ERC721_CONTRACT_KEY_PASS=testkey
@@ -171,6 +175,7 @@ BLOCKCHAIN_URL=
 BLOCKCHAIN_SCAN_FROM=0
 
 ```
+**change the exchange address to lowercase**
 
 ## Ganache
 Test network.
