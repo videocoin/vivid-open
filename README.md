@@ -14,7 +14,9 @@ Get your nft.storage or textilehub credentials and update marketplace_env.list
 https://nft.storage/
 ```
 NFTSTORAGE_API_KEY=
+STORAGE_BACKEND=nftstorage
 ```
+Alternately, if you are using textilehub follow the link and obtain the credentials.
 
 https://docs.textile.io/hub/apis/
 
@@ -24,6 +26,7 @@ MARKETPLACE_TEXTILE_AUTH_KEY=""
 MARKETPLACE_TEXTILE_AUTH_SECRET=""
 MARKETPLACE_TEXTILE_THREAD_ID=""
 MARKETPLACE_TEXTILE_BUCKET_ROOT_KEY=""
+TORAGE_BACKEND=textile
 ```
 
 ## Run the Video NFT Devnet
@@ -32,6 +35,7 @@ MARKETPLACE_TEXTILE_BUCKET_ROOT_KEY=""
 ```
 docker-compose up -d ganache
 ```
+**Note the ganache testnet satrted as above runs in background.**
 
 ### Deploy Video NFT Token Contract
 ```
@@ -67,9 +71,8 @@ http://localhost:8080/
 
 Use the follwing test private-key in Metamask with "Localhost 8545" Netowork
 ```
-Private Key: 4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d
-Account: 0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
-
+Private Key: 0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f
+Account: 0x3393faCcA448B53B509306c53D2Ee1980725A0A0
 ```
 
 Open Lightweight Block Explorer
@@ -81,7 +84,7 @@ Bringdown the Video NFT Devnet
 ```
 docker-compose down -v
 ```
-Note: If you are going run the video-nft-devnetwork again (docker-compose up), flush your browser cache to remove the stale authentication of nft-app from the previous session.
+**Note: If you are going run the video-nft-devnetwork again (docker-compose up), flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
 
 ### Check integrity and DRM
 
