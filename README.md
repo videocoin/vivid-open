@@ -223,3 +223,4 @@ https://github.com/Alethio/ethereum-lite-explorer
 ## Open Issues:
 + Spurious folder nft-app/src/Opensea-js needs to be removed after initial update of submodules
 + In nft-app, after minting the token, "View On IPFS" button is not showing the correct token uri. 
++ Requires exchange address to be converted to lowercase, while setting as env varibale tp nft-app
