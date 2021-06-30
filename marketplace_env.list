@@ -14,8 +14,7 @@ TEXTILE_BUCKET_ROOT_KEY=bafzbeieuvodl4ypexptlmkfmreq23x66l6djn5depvde7r5jstgstau
 AUTH_SECRET=
 
 # videonft oracle parameters
-ERC721_CONTRACT_ADDRESS=0xA7b3d9092b87Fd73F98d0B9EA1bE9332deAFAda8
-#ERC721_AUCTION_CONTRACT_ADDRESS=0xdA563d7C33d08ec19b094Fb253C4Cc31cc8BC0E5
+ERC721_CONTRACT_ADDRESS=0xa7b3d9092b87fd73f98d0b9ea1be9332deafada8
 ERC721_AUCTION_CONTRACT_ADDRESS=0xda563d7c33d08ec19b094fb253c4cc31cc8bc0e5
 ERC721_CONTRACT_KEY='{"address":"3393facca448b53b509306c53d2ee1980725a0a0","crypto":{"cipher":"aes-128-ctr","ciphertext":"9e1059dae28e760dbdeb11c1ae80d3a08d4a37615661728faab7f9ec161b898d","cipherparams":{"iv":"2d03e1f35c1119373bf752ed0bba7101"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"d40a13f97124764eafdd460b09bd4d9e66de3abf59c0f41144943ac194446025"},"mac":"d9bcdd1596506ce2e6b4f7d0cec2f8d5c18d027d7850b445682c08631cd60980"},"id":"e829aa11-5ddd-4772-9c45-bb4bbf86aa04","version":3}'
 ERC721_CONTRACT_KEY_PASS=testkey
