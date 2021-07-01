@@ -44,58 +44,26 @@ services:
     ports:
       - 5432:5432
 
-  # marketplace_init:
-  #   image: registry.videocoin.net/nft/marketplace:alpha-rc2
-  #   container_name: marketplace_init
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   env_file: 
-  #     - marketplace_env.list
-  #   networks:
-  #     vidnftnet:
-  #   command:  bash -c 'sleep 10 && /goose -dir /migrations -table marketplace postgres "host=postgres port=5432 dbname=marketplace sslmode=disable" up'
-
   marketplace:
     image: registry.videocoin.net/nft/marketplace:alpha-rc2
     container_name: marketplace
     depends_on:
-      #marketplace_init:
-      #  condition: service_started
       postgres:
         condition: service_healthy
     env_file: 
-      - marketplace_env.list
-    #network_mode: host      
+      - marketplace_env.list   
     networks:
       vidnftnet:
         ipv4_address: 173.26.0.120 
     ports:
       - 8088:8088
-    command: /goose -dir /migrations -table marketplace postgres "host=postgres port=5432 dbname=marketplace sslmode=disable" up && /marketplace
+    command: 'bash -c "/goose -dir /migrations -table marketplace postgres \"host=postgres port=5432 dbname=marketplace sslmode=disable\" up && /marketplace"'
 
   nft-app:
-    image: registry.videocoin.net/nft/marketplace-ui:alpha-rc2
+    image: registry.videocoin.net/nft/marketplace-ui:alpha-rc2-hotfix1
     container_name: nft-app 
-    environment:
-      REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
-      REACT_APP_NETWORKS: ${REACT_APP_NETWORKS}
-      REACT_APP_TOKEN_ADDRESS: ${REACT_APP_TOKEN_ADDRESS}
-      REACT_APP_CUSTOM_PROVIDER_URL: ${REACT_APP_CUSTOM_PROVIDER_URL}
-      REACT_APP_API_BASE_CUSTOM: ${REACT_APP_API_BASE_CUSTOM}
-      REACT_APP_SITE_HOST_CUSTOM: ${REACT_APP_SITE_HOST_CUSTOM}
-      
-      # Wyvern contract addresses
-      REACT_APP_WYVERN_EXCHANGE: ${REACT_APP_WYVERN_EXCHANGE}
-      REACT_APP_WYVERN_PROXY_REGISTRY: ${REACT_APP_WYVERN_PROXY_REGISTRY}
-      REACT_APP_WYVERN_ATOMICIZER: ${REACT_APP_WYVERN_ATOMICIZER}
-      REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY: ${REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY}
-      
-      REACT_APP_WYVERN_DAO: ${REACT_APP_WYVERN_DAO} 
-      REACT_APP_WYVERN_TOKEN: ${REACT_APP_WYVERN_TOKEN}
-      REACT_APP_WYVERN_TOKEN: ${REACT_APP_WYVERN_TOKEN}
-      REACT_APP_CUSTOM_FEE_RECIPIENT: ${REACT_APP_CUSTOM_FEE_RECIPIENT}
-       
+    env_file:
+      -  nft-app_env.list       
     networks:
       vidnftnet:
         ipv4_address: 173.26.0.130 

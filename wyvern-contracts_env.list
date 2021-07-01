@@ -1,2 +1,7 @@
-CUSTOM_RPC="http://173.26.0.100:8545"
-CUSTPOM_PRIM_KEY="ship arena salad typical truly found start bind insane six wheel vendor"
+# Local testnet
+#CUSTOM_RPC="http://173.26.0.100:8545"
+
+# Renkeby testnet
+CUSTOM_RPC="https://rinkeby.infura.io/v3/df9aed61f27f4f3395ba91516de55ccc"
+
+CUSTPOM_PRIM_KEY="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"

@@ -1,5 +1,10 @@
-CUSTOM_RPC="http://173.26.0.100:8545"
-MNENONIC="ship arena salad typical truly found start bind insane six wheel vendor"
+# Local testing
+#CUSTOM_RPC="http://173.26.0.100:8545"
+
+#Rinkbey testing
+CUSTOM_RPC="https://rinkeby.infura.io/v3/df9aed61f27f4f3395ba91516de55ccc"
+
+MNENONIC="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"
 NFT721_NAME=MyTestNFT
 NFT721_SYMBOL=MTNFT
 INFURA_KEY=
