@@ -45,7 +45,7 @@ services:
       - 5432:5432
 
   marketplace:
-    image: registry.videocoin.net/nft/marketplace:alpha-rc2
+    image: registry.videocoin.net/nft/marketplace:alpha
     container_name: marketplace
     depends_on:
       postgres:
@@ -60,7 +60,7 @@ services:
     command: 'bash -c "/goose -dir /migrations -table marketplace postgres \"host=postgres port=5432 dbname=marketplace sslmode=disable\" up && /marketplace"'
 
   nft-app:
-    image: registry.videocoin.net/nft/marketplace-ui:alpha-rc2-hotfix1
+    image: registry.videocoin.net/nft/marketplace-ui:alpha 
     container_name: nft-app 
     env_file:
       -  nft-app_env.list       
