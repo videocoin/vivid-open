@@ -1,0 +1,7 @@
+# Local testnet
+CUSTOM_RPC="http://173.26.0.100:8545"
+
+# Renkeby testnet
+#CUSTOM_RPC="https://rinkeby.infura.io/v3/XXXXXXXXXXXXXXXXXXXXX"
+
+CUSTPOM_PRIM_KEY="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"

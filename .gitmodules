@@ -1,0 +1,6 @@
+[submodule "videocoin-nft"]
+	path = videocoin-nft
+	url = https://github.com/videocoin/videocoin-nft
+[submodule "wyvern-ethereum"]
+	path = wyvern-ethereum
+	url = https://github.com/videocoin/wyvern-ethereum

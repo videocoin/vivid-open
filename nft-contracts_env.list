@@ -1,0 +1,11 @@
+# Local testing
+CUSTOM_RPC="http://173.26.0.100:8545"
+
+#Rinkbey testing
+#CUSTOM_RPC="https://rinkeby.infura.io/v3/XXXXXXXXXXXXXXXXXXX"
+
+MNENONIC="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"
+NFT721_NAME=MyTestNFT
+NFT721_SYMBOL=MTNFT
+INFURA_KEY=
+ERC1155_TOKEN_URI_TEMPLATE="http://localhost:3000/tokens/nft1155/{id}.json"

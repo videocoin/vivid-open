@@ -1,0 +1,21 @@
+// {type:sequence}
+// {generate:true}
+
+[Publisher]mint(File)>[FrontEnd]
+[FrontEnd]Wallet Req.>[Publisher]
+[Publisher]Wallet Authorize>[FrontEnd]
+
+[FrontEnd]File Upload>[MarketPlace]
+[MarketPlace]Encrypt>[MarketPlace]
+[MarketPlace]Upload>[TextileHub]
+
+[MarketPlace]Thumbnail>[MarketPlace]
+[MarketPlace]Upload>[TextileHub]
+
+[MarketPlace]DRM Data>[MarketPlace]
+[MarketPlace]TokenURI Content>[TextileHub]
+
+[MarketPlace]mint(minter, TokenURI, TokenId, Publisher)>[TokenContract]
+[FrontEnd]getAsset(id)>[MarketPlace]
+[MarketPlace]Asset Info for id.>[FrontEnd]
+
