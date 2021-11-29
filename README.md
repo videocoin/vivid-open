@@ -40,7 +40,7 @@ git submodule update --init --recursive
 ```
 
 ### Install the VideoCoin-NFT and Wyvern Contracts
-Follow the instructions in the repos to install the contracts on the selected blockchain. The instructions in the repos use truffle tool to deploy the contracts. Alternately you can use etg_Brownie tool to deploy the contracts. We documented the contract deployment using eth_Browinie in ![VideCoinNFT_Polygon_Matic.md](VideCoinNFT_Polygon_Matic.md). Y
+Follow the instructions in the repos to install the contracts on the selected blockchain. The instructions in the repos use truffle tool to deploy the contracts. Alternately you can use etg_Brownie tool to deploy the contracts. We documented the contract deployment using eth_Browinie in ![VideCoinNFT_Polygon_Matic.md](VideCoinNFT_Polygon_Matic.md).
 
 
 ### Marketplace environment variables
@@ -111,6 +111,7 @@ REACT_APP_CUSTOM_PROVIDER_URL=<Json-RPC for blockchain access>
 REACT_APP_API_BASE_CUSTOM='<market place ip address>:8088'
 REACT_APP_SITE_HOST_CUSTOM=
 ```
+*Note: The addresses used in the above fille should contain only lower-case. Convert [A-F] in the addresses to [a-f]
 
 ### Start Marketplace
 
@@ -120,7 +121,7 @@ docker-compose up marketplace nft-app
 ```
 ## Open the browser and launch the aft-app.
 ```
-http://<url:8080>
+http://<hosting-server-ip-address:8080>
 ```
 
 ## Overview of VideoNFT Marketplace Components
@@ -132,6 +133,6 @@ http://<url:8080>
 * Wyvern Exchange Contracts
 * Filecoin Storage and providers
 
-![Video NFT Devenet](./docs/VideoCoinNFTOverview.svg)
+![Video NFT Architecture Overview](./docs/VideoCoinNFTOverview.svg)
 
 

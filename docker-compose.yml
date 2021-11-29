@@ -21,7 +21,7 @@ services:
 
   marketplace:
     #image: marketplace:alphav2
-    image: registry.videocoin.net/nft/marketplace:beta2
+    image: registry.videocoin.net/nft/marketplace:v1.0.0-beta
     container_name: marketplace
     volumes:
     - ./nft-test-credentials.json:/data/config/nft-test-credentials.json

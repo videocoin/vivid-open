@@ -1,6 +1,6 @@
-# Videcoin NFT Marketplace installation with Polygon-Matic
+# Videcoin NFT Marketplace installation with Polygon-Matic Mainnet, Rinkeby Testnet
 
-This document gives instructions for using VideoCoin NFT Marketplace with Polygon_Matic blockchain
+This document gives instructions for using VideoCoin NFT Marketplace with Polygon_Matic blockchain and Rinkeby testnet. The instructions should work with any Ethereum VM compliant networks. We used Matic and Rinkeby for initial testing.
 
 Topics covered in this document:
 
@@ -10,10 +10,10 @@ Topics covered in this document:
   * QuickNode For Blockchain Access
   * Configure Metamask
   * Setup Contract Owner, Operator and Test accounts
-* Installation of Contracts on Polygon-Matic
+* Installation of Contracts
   * Setup eth-Brownie: contract deployment tool
-  * Install VideoCoin NFT Contract on Polygon-Matic
-  * Install Wyvern Exchange Contracts on Polygon-Matic
+  * Install VideoCoin NFT Contract
+  * Install Wyvern Exchange Contracts
 * Prepare Configuration Files for Marketplace/UI
 * Run the Marketplace
 .
@@ -58,17 +58,18 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
-## Matic Accounts and Blockchain Access
+## Accounts and Blockchain Access
 ### QuickNode For Blockchain Access
-You need an RPC endpoint to access Polygon_matic blockchain. There are several free and public rpc endpoints available. For better response times you may setup a paid setup endpoint such as from QuickNode https://www.quicknode.com/
+You need an RPC endpoint to access Polygon_matic blockchain or Rinkeby blockchain. There are several free and public rpc endpoints available. For better response times you may setup a paid setup endpoint such as from QuickNode https://www.quicknode.com/ or https://infura.io/. We used quicknode for matic and infura for Rinkeby.
 
-We used a QuickNode endpoint for testing the NFT Marketplace.
-Configure Metamask
+### Configure Metamask:
 You can use the metamask wallet directly to  transfer  funds  between Matic accounts. You  can also use Polygon Wallet/Bridge on top of Metamask to transfer funds natively or using bridge.
 
 Refer the following link configuring Polygon for Metamask
 
 https://docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/
+
+Metamask has built-in support for Rinkeby.
 
 ### Stup Contract Owner, Operator and Test accounts
 Obtain a prefunded account with Matic: Matic is required to install contracts and mint NFT on Polygon-Matic blockchain. 
@@ -114,6 +115,7 @@ Import Matic network into Brownie
 brownie networks import matic-config.yaml
 ```
 
+eth_Brownie has built-in support for Rinkeby network.  
 
 Install VideoCoin NFT Contract on Polygon-Matic
 
@@ -146,13 +148,13 @@ accounts.load("owner-account-key-file-path")
 accounts.load("operator-account-keyfile-path")
 #Enter password foroperator-account:
 
-nft=NFT721.deploy("VNFT", "VNFT", owner-account,  {'from': owner-account, 'gas_price': '50 gwei'})
+nft=NFT721.deploy("VNFT", "VNFT", owner-account,  {'from': accounts[0], 'gas_price': '50 gwei'})
 
 
-nft.addOperator(operator-account, {'from':owner-account, 'gas_price': '50 gwei'})
+nft.addOperator(operator-account, {'from':accounts[0], 'gas_price': '50 gwei'})
 ```
 
-
+*Note: Use "brownie console --network rinkeby" for Rinkeby network.  
 
 Install Wyvern Exchange Contracts on Polygon-Matic
 
@@ -188,10 +190,10 @@ WyvernAtomicizer.deploy({'from': accounts[0], 'gas_price': '50 gwei'})
 WyvernProxyRegistry.deploy({'from': accounts[0], 'gas_price': '50 gwei'})
 # outputs ProxyRegistryAddress
 
-WyvernTokenTransferProxy.deploy(ProxyRegistryAddress, {''from': accounts[0], 'gas_price': '50 gwei'})
+WyvernTokenTransferProxy.deploy(ProxyRegistryAddress, {'from': accounts[0], 'gas_price': '50 gwei'})
 # outputs TokenTransferProxyAddress
 
-WyvernExchange.deploy(ProxyRegistryAddress, TokenTransferProxyAddress, <DAO Address>', <protocol fee address>,  {''from': accounts[0], 'gas_price': '50 gwei'})
+WyvernExchange.deploy(ProxyRegistryAddress, TokenTransferProxyAddress, <DAO Address>', <protocol fee address>,  {'from': accounts[0], 'gas_price': '50 gwei'})
 ```
 
 Prepare Configuration Files for Marketplace/UI
@@ -203,8 +205,8 @@ NFTSTORAGE_API_KEY=<API-KEY>
 STORAGE_BACKEND=nftstorage
 
 ### videonft oracle parameters
-ERC721_CONTRACT_ADDRESS=0x123456b74afcF96D54df3E584802e1cfa88350c8
-ERC721_AUCTION_CONTRACT_ADDRESS=0x549BCD277d0aF1758dC21dAcAD59385570Ded1B0
+ERC721_CONTRACT_ADDRESS=
+ERC721_AUCTION_CONTRACT_ADDRESS=
 ERC721_CONTRACT_KEY=<key-file>
 ERC721_CONTRACT_KEY_PASS=<password>
 
@@ -232,14 +234,11 @@ REACT_APP_API_BASE_CUSTOM='http://35.199.175.19:8088'
 REACT_APP_SITE_HOST_CUSTOM=
 
 # Wyvern contract addresses
-REACT_APP_WYVERN_EXCHANGE=0x549BCD277d0aF1758dC21dAcAD59385570Ded1B0
-REACT_APP_WYVERN_PROXY_REGISTRY=0xB476deEe59ADb4fD319e05DBFA6bEe75938053B7
-REACT_APP_WYVERN_ATOMICIZER=0xE69A2bB28ECe415AF8ed519fD125A5028bfd0f14
-REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY=0x4aA6A818172D72837461E60e3A9CF062d8e2806e
+REACT_APP_WYVERN_EXCHANGE=
+REACT_APP_WYVERN_PROXY_REGISTRY=
+REACT_APP_WYVERN_ATOMICIZER=
+REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY=
 
-REACT_APP_WYVERN_DAO=0x6bfb2292c5a25661b31dec0e141817ecea9cbb1f
-REACT_APP_WYVERN_TOKEN=0x28b9790b9dc31bfbd35856021a4a001d150229cd
-REACT_APP_CUSTOM_FEE_RECIPIENT=0x3393faCcA448B53B509306c53D2Ee1980725A0A0
 ```
 
 
