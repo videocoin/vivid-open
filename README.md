@@ -1,31 +1,83 @@
-# Video NFT Installer
-docker-compose based installer to setup video-nft contracts, wyvern-exchange contracts on a selected blockchain. It will help setup video nft marketplace and marketplace-ui hosting and integration with Filecoin storage exposed through nft.storage or textilehub.  
+# VideoCoin NFT Installer
+
+The repo contains installers and instructions for using VideoCoin-NFT marketplace with Filecoin storage along with an Ethereum VM compliant blockchains.  
+
+The installer is based on docker-compose scripts that use VideoCoin-NFT marketplace backend, marketplace-UI in the form of docker containers. It also contains instructions for installing video-nft smart-contracts and wyvern-exchange smart-contracts on an Ethereum-VM compliant blockchain.
+
+Filecoin storage can be accessed through third party Filecoin storage access providers such as nft.storage or Textile Hub.
+
+## Prerequisites
+* **Hardware**: Marketplace docker images can be used with any container orchestration platforms such as Kubernetes that allow mult-machine clusters for application scalability. We use docker-compose for testing the containers on 16-Core/32GB GCP instances.
+* **Docker Engine and docker-compose**: Prepare your machine by installing Docker Engine and docker-compose: Refer https://docs.docker.com/engine/install/  and  https://docs.docker.com/compose/install/ for installation instructions.
+* **Filecoin storage access**: VideoCoin NFTs are stored on Filecoin Storage Blockchain. The following storage access providers are used to access the Filecoin. These providers also pin the NFTs to be accessible  through the IPFS file system/gateways. The installer needs the API keys from one of these providers.
+  * *NFT.Storage*: Refer https://nft.storage/ for subscription to the service 
+  * *Textile Hub*: Refer https://www.textile.io/ for subscription to the service.
+* **Blockchain**: Select a Ethereum VM complaint blockchain and install the VideoCoin-NFT and Wyvern Exchange Contracts. Following are some examples:
+  * *Ethereum Mainnet*
+  * *Polygon-Matic*
+  * Ethereum Testnets Rinkeby, Ropsten etc. for testing
+* **Blockchain Access**: VideoCoin-NFT Marketplace accesses the Blockchain through Json-RPC. Marketplace can be connected either to your own node connected to Blockchain or your can use one of the providers. Following are some providers:  
+  * *Infura*: Refer https://infura.io/ for subscription to the service.
+  * *Quicknode*: Refer https://www.quicknode.com/ for subscription to the service.
+
+## Marketplace component repos and Docker Images
+* Marketplace:
+  * docker image: registry.videocoin.net/nft/marketplace:beta2  
+  * git repo: https://github.com/videocoin/marketplace
+* Marketplace-UI:
+  * docker image: registry.videocoin.net/nft/marketplace-ui:beta
+  * git repo: https://github.com/videocoin/nft-app-ext
+* VideoCoin-NFT Contract:
+  * git repo: https://github.com/videocoin/videocoin-nft
+* Wyvern Exchange contract
+  * git repo: https://github.com/videocoin/wyvern-ethereum
 ## Quick start
 
-
-checkout the repo, get the submodules and run the docker-compose.
+### Checkout the repo, get the submodules.
 ```
+git clone https://github.com/videocoin/videocoin-nft-installer.git
 git submodule update --init --recursive
 ```
 
-### prerequisites
+### Install the VideoCoin-NFT and Wyvern Contracts
+Follow the instructions in the repos to install the contracts on the selected blockchain. The instructions in the repos use truffle tool to deploy the contracts. Alternately you can use etg_Brownie tool to deploy the contracts. We documented the contract deployment using eth_Browinie in ![VideCoinNFT_Polygon_Matic.md](VideCoinNFT_Polygon_Matic.md).
 
-Update the docker-compose to lattest vetsion(v1.29.1)  
-https://docs.docker.com/compose/install/
 
-*Note: Make sure you follow docker engine install and post install steps to set the user permissions to run docker containers without sudo mode
-### Filecoin storage setup
-Get your nft.storage or textilehub credentials and update marketplace_env.list  
+### Marketplace environment variables
+Modify the marketplace_env.list  in the repo with deployed addresses.
+The following environment variables are used to supply the following:
+* Deployed contract addresses of VideoCoin NFT and Wyvern Exchange contracts
+* Filecoin storage provider API keys
+* Blockchain access provider API keys
+* GCP Bucket and credentials for storage backup on GCP
+* Connectivity to Postgres DB
 
-https://nft.storage/
+marketplace_env.list:
+
 ```
-NFTSTORAGE_API_KEY=
+ERC721_CONTRACT_ADDRESS=<VideoCoin NFT contract address>
+ERC721_CONTRACT_KEY=<Contract owner address. It should be in the following form  
+'{"address": "xxxxxxxxxxxx", "crypto": {"cipher": "aes-128-ctr", "cipherparams": {"iv": "xxxxxxxxxxxxxxxxx"}, "ciphertext": "xxxxxxxxxxxxxxxxxxxxxxxx", "kdf": "scrypt", "kdfparams": {"dklen": 32, "n": 262144, "r": 1, "p": 8, "salt": "xxxxxxxxxxxxxxx"}, "mac": "xxxxxxxxxxxxx"}, "id": "xxxxxxxxxxxxx", "version": 3}'>
+
+ERC721_CONTRACT_KEY_PASS=<Password for ERC721_CONTRACT_KEY>
+
+BLOCKCHAIN_SCAN_FROM=<block number of blockchain where contract activity started>
+BLOCKCHAIN_URL=<Json-RPC End point for blockchain access>
+BLOCKCHAIN_ID=<Blockchain ID>
+
+DBURI="host=postgres port=5432 dbname=marketplace sslmode=disable"
+
+NFTSTORAGE_API_KEY=<NFT Storage API key>
 STORAGE_BACKEND=nftstorage
+
+
+GCP_BUCKET=<GCP Bucket>
+GOOGLE_APPLICATION_CREDENTIALS=<GCP Bucket access credentials json file path>
 ```
-Alternately, if you are using textilehub follow the link and obtain the credentials.
+Note: GOOGLE_APPLICATION_CREDENTIALS refers to a path in the docker container. Look at the marketplace volumes attribute in docker-compose.yaml to map the credentials from the host file.
 
-https://docs.textile.io/hub/apis/
 
+If you are using Textile Hub Filecoin storage, provide the following instead of NFTSTORAGE_API_KEY and STORAGE_BACKEND=nftstorage
 
 ```
 MARKETPLACE_TEXTILE_AUTH_KEY=""
@@ -35,210 +87,52 @@ MARKETPLACE_TEXTILE_BUCKET_ROOT_KEY=""
 STORAGE_BACKEND=textile
 ```
 
-### Install the contracts on blockchain
+### Marketplace UI environment variables
 
-You can start a local testnet or install on Mainnet or testnets
+Modify the marketplace-UI(nft-app_env.list) in the repo with deployed addresses.
+The following environment variables are used to supply the following:
+* installed contract addresses
+* Blockchain access provider
+* Marketplace Server URL
 
-
-### If you are planning on using  ganache testnet, run the following command
-
-Configure the wallet key for prefunding. Set the wallt mnemonic in .env file
+nft-app_env.list:
 ```
-# test wallet
-MNEMONIC="ship arena salad typical truly found start bind insane six wheel vendor"
-```
-```
-docker-compose up -d ganache
-```
-**Note the ganache testnet satrted as above runs in background.**
+REACT_APP_TOKEN_ADDRESS=<VideoCoin NFT contract address>
 
-### Deploy Video NFT Token Contract
-Set the contract owner and jsin-rpc path to Blockchain by 
-modifying  nft-contracts_env.list and set the environment variables:
-```
-# Local testing ganache at 173.26.0.100
-#CUSTOM_RPC="http://173.26.0.100:8545"
+REACT_APP_WYVERN_EXCHANGE=<WyvernExchange contract address>
+REACT_APP_WYVERN_PROXY_REGISTRY=<WyvernProxyRegistry contract address>
+REACT_APP_WYVERN_ATOMICIZER=<WyvernAtomicizer contract address>
+REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY=<WyvernTokenTransferProxy>
+REACT_APP_NETWORKS=<Blockchain NetworkID>
 
-#Rinkbey testing
-CUSTOM_RPC="https://rinkeby.infura.io/v3/<INFURA PROJECT ID>"
+REACT_APP_CUSTOM_FEE_RECIPIENT=<Protocol fee recipient address>
+REACT_APP_CUSTOM_PROVIDER_URL=<Json-RPC for blockchain access>
 
-# Contract owner wallet mnemonic or Private key
-MNENONIC="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"
-NFT721_NAME=MyTestNFT
-NFT721_SYMBOL=MTNFT
-ERC1155_TOKEN_URI_TEMPLATE="http://localhost:3000/tokens/nft1155/{id}.json"
-
-```
-Deploy the Video NFT Token contract
-```
-docker-compose up nft-contracts-deploy
-```
-
-### Deploy Wyvern exchange
-Set the contract owner and jsin-rpc path to Blockchain by 
-modifying  wyvern-contracts_env.list and set the environment variables:
-
-```
-# Local testing ganache at 173.26.0.100
-#CUSTOM_RPC="http://173.26.0.100:8545"
-
-# Rinkeby testnet
-CUSTOM_RPC="https://rinkeby.infura.io/v3/<INFURA PROJECT ID>"
-
-# Contract owner wallet mnemonic or Private key
-CUSTPOM_PRIM_KEY="0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f"
-```
-Deploy the Wyvern exchange contract
-```
-docker-compose up wyvern-contracts-deploy
-```
-
-**Note: If you use the test wallet mnemonic/private key specified in this doc, the generated contract addresses are deterministic, if the contracts are deployed in the order specified in the document due to deterministic nonce update. This will useful for quick testing**
-
-## Run the nft-app and marketplace services
-
-Configure the marketplace and nft-app with the token contract, wyvern exchange contract addresses generated in the previous steps. Take the contract addresses output under custom network option.
-### Marketplace env variables
-```
-# select ipfs/filoecoin storate infra
-STORAGE_BACKEND=nftstorage
-#STORAGE_BACKEND=textile
-
-# nft.storage credentials
-NFTSTORAGE_API_KEY=
-
-# textilehub credentials
-TEXTILE_AUTH_KEY=
-TEXTILE_AUTH_SECRET=
-TEXTILE_THREAD_ID=
-TEXTILE_BUCKET_ROOT_KEY=
-
-
-# videonft oracle parameters
-ERC721_CONTRACT_ADDRESS=0xa7b3d9092b87fd73f98d0b9ea1be9332deafada8
-ERC721_AUCTION_CONTRACT_ADDRESS=0xda563d7c33d08ec19b094fb253c4cc31cc8bc0e5
-
-# Contract owner wallet key file
-ERC721_CONTRACT_KEY='{"address":"3393facca448b53b509306c53d2ee1980725a0a0","crypto":{"cipher":"aes-128-ctr","ciphertext":"9e1059dae28e760dbdeb11c1ae80d3a08d4a37615661728faab7f9ec161b898d","cipherparams":{"iv":"2d03e1f35c1119373bf752ed0bba7101"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"d40a13f97124764eafdd460b09bd4d9e66de3abf59c0f41144943ac194446025"},"mac":"d9bcdd1596506ce2e6b4f7d0cec2f8d5c18d027d7850b445682c08631cd60980"},"id":"e829aa11-5ddd-4772-9c45-bb4bbf86aa04","version":3}'
-ERC721_CONTRACT_KEY_PASS=testkey
-
-# Local testnet
-BLOCKCHAIN_URL=http://ganache:8545
-BLOCKCHAIN_SCAN_FROM=0
-
-# Rinkeby testnet
-#BLOCKCHAIN_SCAN_FROM=8856470
-#BLOCKCHAIN_URL="https://rinkeby.infura.io/v3/<INFURA PROJECT ID>"
-
-```
-nft-app env variables
-```
-# Contract owner wallet(test key)
-MNEMONIC="ship arena salad typical truly found start bind insane six wheel vendor"
-
-# env for nft-app
-# marketplace api endpoint
-REACT_APP_BASE_URL='http://localhost:8088/api/v1'
-#Allowed network for nft-app
-
-# Video NFT token contract address
-REACT_APP_TOKEN_ADDRESS=0xA7b3d9092b87Fd73F98d0B9EA1bE9332deAFAda8
-
-# Local testnet
-REACT_APP_NETWORKS=1337
-REACT_APP_CUSTOM_PROVIDER_URL=http://localhost:8545
-
-# Rinkeby
-#REACT_APP_NETWORKS=4
-#REACT_APP_CUSTOM_PROVIDER_URL="https://rinkeby.infura.io/v3/XXXXXXXXXXXXXXXXXXXXX"
-
-REACT_APP_API_BASE_CUSTOM='http://localhost:8088'
+REACT_APP_API_BASE_CUSTOM='<market place ip address>:8088'
 REACT_APP_SITE_HOST_CUSTOM=
-
-# Wyvern contract addresses
-REACT_APP_WYVERN_EXCHANGE=0xda563d7c33d08ec19b094fb253c4cc31cc8bc0e5
-REACT_APP_WYVERN_PROXY_REGISTRY=0xC3d023E14416a1167AF0D774ecAEC06eCB1D3494
-REACT_APP_WYVERN_ATOMICIZER=0x1D095A09917dB45837B681721B1aDB082F0eA882
-REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY=0xa8D2960b266b5Dfd5F17786049e524e3E48Ed4b0
-
-REACT_APP_WYVERN_DAO=0x04f9b61Feea12E6F60ddCcB8a4ca260F770B4154
-REACT_APP_WYVERN_TOKEN=0x26FbFA40B26aEdfE2548746634f386204D7682e3
-REACT_APP_CUSTOM_FEE_RECIPIENT=0x3393faCcA448B53B509306c53D2Ee1980725A0A0
 ```
+*Note: The addresses used in the above fille should contain only lower-case. Convert [A-F] in the addresses to [a-f]
 
-Run the postgres, marketplace and nft-app hosting service
+### Start Marketplace
+
+You can start marketplace using the docker-compose cli
 ```
-docker-compose up -d postgres
 docker-compose up marketplace nft-app
 ```
 ## Open the browser and launch the aft-app.
 ```
-http://localhost:8080/
+http://<hosting-server-ip-address:8080>
 ```
 
-Following is the test wallet used for deploying contracts. Use it Metamask with "Localhost 8545" Netowork or testnetwork json-rpc path to access or test the contracts
-```
-Test Wallet Private Key: 0x9312d1929dedd6005d9bfd4b6d51446fa0732958cef08c7592493cd855a2566f
-Account: 0x3393faCcA448B53B509306c53D2Ee1980725A0A0
-```
-
-Open Lightweight Block Explorer
-```
-http://localhost:8090/
-```
-
-Bringdown the Video NFT Devnet
-```
-docker-compose down -v
-```
-**Note: If you are going to run the video-nft-devnetwork again after shutting down, flush your browser cache to remove the stale authentication tokens of of nft-app from the previous session.**
-
-### Check integrity and DRM
-
-* Retrieve the drm data from the token URI
-* Use the [Ownership Proof Tool](ownership-proof-tool) decrypt the drm data. You need to supply the private key corresponding to the public key used for creating DRM data.
-* This step outputs the content encryption key.
-* Use the content encryption key to decode the encrypted video asset using ffmpeg.
-
-Decrypt the content using the encryption key obtained in the previous step.
-```
-ffmpeg  -decryption_key <decryption key> -i encrypted_firstfilm.mp4 -c:v copy -c:a copy test_dec.mp4
-```
-
-## VideoNFT Marketplace Components
-Docker-compose based devnet that includes the following services:
-* NFT-APP(Video NFT Frontend)
+## Overview of VideoNFT Marketplace Components
+* Marketplace-UI(Frontend)
 * Marketplace(API Backend)
-* Postgres(Database for userinfo)
-* Blockchain (Local testnet, remote testnet, Mainnet)
-* Explorer(Lightweight Block Explorer)
-* Token Contracts(Contract deployer)
+* Postgres(Database for user-info)
+* Blockchain, Ethereum Mainnet or other EVM Compliant blockchains
+* VideoCoin-NFT Contract
 * Wyvern Exchange Contracts
+* Filecoin Storage and providers
 
-![Video NFT Devenet](./docs/devnet.drawio.svg)
+![Video NFT Architecture Overview](./docs/VideoCoinNFTOverview.svg)
 
-
-
-The above components are configurable. The Video NFT GUI installer obtains the configuration parameters and configures the components. The configuration options of each component are listed below for reference.
-
-## nft-app
-VideoCoin NFT Frontend
-Source repo: [https://github.com/videocoin/nft-app-ext](https://github.com/videocoin/nft-app-ext)
-## Marketplace
-This service provides the backend API for the VideoCoin NFT.
-Source repo: [https://github.com/videocoin/marketplace](https://github.com/videocoin/marketplace)
-## Blockchain
-Test network, VideoCoin network or Ethereum Mainnet
-## Token Contracts
-Video NFT Token Contracts
-Source repo: [https://github.com/videocoin/videocoin-nft](https://github.com/videocoin/videocoin-nft)
-## Wyvern Exchange Contracts
-Wyvern exchange
-
-Source repo: [https://github.com/videocoin/wyvern-ethereum](https://github.com/videocoin/wyvern-ethereum)
-## Explorer
-An open source Lightweight Block Explorer
-It can show the status of blockchain and can be replaced with any Ethereum blockchain. It is useful if a local test chain such as Ganache is used.
-
-https://github.com/Alethio/ethereum-lite-explorer
 
