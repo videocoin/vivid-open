@@ -38,7 +38,7 @@ services:
     command: 'bash -c "/goose -dir /migrations -table marketplace postgres \"host=postgres port=5432 dbname=marketplace sslmode=disable\" up && /marketplace"'
 
   nft-app:
-    image: registry.videocoin.net/nft/marketplace-ui:beta 
+    image: registry.videocoin.net/nft/marketplace-ui:v1.0.1-os-beta
     container_name: nft-app 
     env_file:
       -  nft-app_env.list       
