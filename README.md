@@ -1,4 +1,4 @@
-# VideoCoin NFT Installer
+# VividOpen
 
 The repo contains installers and instructions for using VideoCoin-NFT marketplace with Filecoin storage along with an Ethereum VM compliant blockchains.  
 
